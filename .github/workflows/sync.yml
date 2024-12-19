@@ -25,13 +25,13 @@ jobs:
           git fetch sample_1
           git checkout main  # Ensure you're on the correct branch
           
-      - name: Merge changes from Sample_1
+      - name: Merge changes from Sample_1, automatically resolve conflicts in favor of Sample_1
         run: |
-          git merge sample_1/main --allow-unrelated-histories -m "Syncing from Repo Sample 1" || echo "Merge conflict detected. Please resolve manually."    
+          git merge sample_1/main --strategy-option theirs --allow-unrelated-histories -m "Syncing from Repo Sample_1" || echo "Merge conflict detected."    
       
       - name: Pull latest changes from Repo Sample_2 (to avoid push rejection)
         run: |
-          git pull origin main --rebase  # Pull the latest changes from the remote repo, rebasing if necessary.
+          git pull origin main --rebase || echo "Skipping pull due to conflicts." # Pull the latest changes from the remote repo, rebasing if necessary.
  
       - name: Push changes to Repo Sample_2
         env:
