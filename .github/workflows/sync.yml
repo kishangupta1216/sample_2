@@ -25,10 +25,14 @@ jobs:
           git fetch sample_1
           git checkout main  # Ensure you're on the correct branch
           
-      - name: Merge changes from Sample_1, favor Sample_2's changes in case of conflict
+      - name: Merge changes from Sample 1
         run: |
-          git merge sample_1/main --strategy-option ours --allow-unrelated-histories -m "Syncing from Repo Sample_1"    
-       
+          git merge sample1/main --allow-unrelated-histories -m "Syncing from Repo Sample 1" || echo "Merge conflict detected. Please resolve manually."    
+      
+      - name: Pull latest changes from Repo Sample_2 (to avoid push rejection)
+        run: |
+          git pull origin main --rebase  # Pull the latest changes from the remote repo, rebasing if necessary.
+ 
       - name: Push changes to Repo Sample_2
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Use the stored PAT
