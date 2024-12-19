@@ -1,0 +1,30 @@
+name: Sync Repo Sample_1 to Repo Sample_2
+
+on:
+  push:
+    branches:
+      - main  # Or the branch you want to monitor for changes in Repo Sample 1
+
+jobs:
+  sync-repos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo Sample_2
+        uses: actions/checkout@v3
+        
+      - name: Set up Git
+        run: |
+          git config user.name "kishangupta1216"
+          git config user.email "guptakishan1216@gmail.com"
+          
+      - name: Add Repo Sample_1 as a remote
+        run: git remote add sample_1 https://github.com/kishangupta1216/sample_1.git  # Replace with actual URL of Sample 1
+
+      - name: Fetch changes from Repo Sample_1
+        run: |
+          git fetch sample_1
+          git checkout main  # Ensure you're on the correct branch
+          git merge sample_1/main --allow-unrelated-histories -m "Syncing from Repo Sample_1"  # Merging changes from Sample 1
+
+      - name: Push changes to Repo Sample_2
+        run: git push origin main  # Pushing changes to Repo Sample_2's main branch
