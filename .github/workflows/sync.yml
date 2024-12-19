@@ -25,6 +25,11 @@ jobs:
           git fetch sample_1
           git checkout main  # Ensure you're on the correct branch
           git merge sample_1/main --allow-unrelated-histories -m "Syncing from Repo Sample_1"  # Merging changes from Sample 1
-
+          
+       
       - name: Push changes to Repo Sample_2
-        run: git push origin main  # Pushing changes to Repo Sample_2's main branch
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Use the stored PAT
+        run: |
+          git remote set-url origin https://github.com/kishangupta1216/sample_2.git
+          git push https://github.com/kishangupta1216/sample_2.git main  # Use the token for authentication
